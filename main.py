@@ -5,26 +5,25 @@ def get_word():
     word = random.choice(words_list)
     return word.upper()
 
-print(get_word())
-
 def play(word):
     word_completion = '_'*len(word)
     guessed = False
     guessed_letters = []
     guessed_words = []
-    tries = 6
+    tries = 7
     print("Let's play Hangman!")
     print(display_hangman(tries))
     print(word_completion)
     print("\n")
     while not guessed and tries > 0:
         guess = input("Please guess a letter or a word: ").upper()
+        print("\n")
         if len(guess) == 1 and guess.isalpha():
             if guess in guessed_letters:
                 print("You already guessed the letter", guess)
             elif guess not in word:
                 print(guess, "is not in the word.")
-                tries -=1
+                tries -= 1
                 guessed_letters.append(guess)
             else:
                 print("Well done", guess, "is in the word")
@@ -50,6 +49,9 @@ def play(word):
             print("Not a valid guess")
         print(display_hangman(tries))
         print(word_completion)
+        print('\nYou have guessed these letters so far:')
+        for letter in guessed_letters:
+            print(letter, end=' ')
         print("\n")
     if guessed:
         print("Congrats, you guessed the word! You win!")
@@ -63,40 +65,40 @@ def display_hangman(tries):
                    --------
                    |      |
                    |      O
-                   |     \\|/
+                   |     /|\\
                    |      |
                    |     / \\
-                   -
+                  ===
                 """,
                 # head, torso, both arms, and one leg
                 """
                    --------
                    |      |
                    |      O
-                   |     \\|/
+                   |     /|\\
                    |      |
                    |     / 
-                   -
+                  ===
                 """,
                 # head, torso, and both arms
                 """
                    --------
                    |      |
                    |      O
-                   |     \\|/
+                   |     /|\\
                    |      |
                    |      
-                   -
+                  ===
                 """,
                 # head, torso, and one arm
                 """
                    --------
                    |      |
                    |      O
-                   |     \\|
+                   |     /|
                    |      |
                    |     
-                   -
+                  ===
                 """,
                 # head and torso
                 """
@@ -106,7 +108,7 @@ def display_hangman(tries):
                    |      |
                    |      |
                    |     
-                   -
+                  ===
                 """,
                 # head
                 """
@@ -116,9 +118,9 @@ def display_hangman(tries):
                    |    
                    |      
                    |     
-                   -
+                  ===
                 """,
-                # initial empty state
+                # rope
                 """
                    --------
                    |      |
@@ -126,10 +128,21 @@ def display_hangman(tries):
                    |    
                    |      
                    |     
-                   -
+                  ===
+                """,
+                # initial empty state
+                """
+                   --------
+                   |      
+                   |      
+                   |    
+                   |      
+                   |     
+                  ===
                 """
     ]
     return stages[tries]
+
 
 def main():
     word = get_word()
@@ -137,6 +150,7 @@ def main():
     while input("Play again? (Y/N) ").upper() == "Y":
         word = get_word()
         play(word)
+
 
 if __name__ == "__main__":
     main()
